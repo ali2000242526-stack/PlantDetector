@@ -94,48 +94,24 @@
 <body>
 
   <!-- Header -->
-    <!-- Header - بزرگ و وسط‌چین -->
-  <header style="text-align: center; padding: 40px 20px; background: linear-gradient(135deg, #1B5E20 0%, #4CAF50 100%); color: white; border-radius: 0 0 20px 20px; margin-bottom: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
+  <header>
+    <h1>🐛 Insect Detector</h1>
+    <p><strong>پایش و تشخیص هوشمند حشرات و آفات با الگوریتم YOLOv26_n</strong></p>
     
-    <!-- عنوان اصلی بزرگ -->
-    <h1 style="font-size: 2.5rem; margin: 0 0 10px; font-weight: 800; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
-      🐛 Insect Detector
-    </h1>
-    
-    <!-- زیرعنوان -->
-    <p style="font-size: 1.4rem; margin: 0 0 20px; font-weight: 500; opacity: 0.95;">
-      پایش و تشخیص هوشمند حشرات و آفات با الگوریتم YOLOv26_n
-    </p>
-    
-    <!-- بدج‌های ویژگی‌ها - وسط‌چین -->
-    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin: 20px 0;">
-      <span class="badge badge-primary" style="font-size: 1rem; padding: 8px 16px;">📱 اندروید 7.0+</span>
-      <span class="badge badge-accent" style="font-size: 1rem; padding: 8px 16px;">🧠 YOLOv26_n</span>
-      <span class="badge badge-success" style="font-size: 1rem; padding: 8px 16px;">🦋 69 گونه حشره</span>
-      <span class="badge badge-warning" style="font-size: 1rem; padding: 8px 16px;">📍 GPS Enabled</span>
-      <span class="badge badge-primary" style="font-size: 1rem; padding: 8px 16px;">🌐 فارسی</span>
-      <span class="badge badge-success" style="font-size: 1rem; padding: 8px 16px;">☁️ Supabase + Hugging Face</span>
+    <div style="margin: 15px 0;">
+      <span class="badge badge-primary">📱 اندروید 7.0+</span>
+      <span class="badge badge-accent">🧠 YOLOv26_n</span>
+      <span class="badge badge-success">🦋 69 گونه حشره</span>
+      <span class="badge badge-warning">📍 GPS Enabled</span>
+      <span class="badge badge-primary">🌐 فارسی</span>
+      <span class="badge badge-success">☁️ Supabase + Hugging Face</span>
     </div>
     
-    <!-- توضیحات اصلی - وسط‌چین -->
-    <p style="font-size: 1.2rem; margin: 25px auto; max-width: 800px; line-height: 1.8; background: rgba(255,255,255,0.15); padding: 20px; border-radius: 12px; backdrop-filter: blur(10px);">
+    <p style="background: var(--card); padding: 15px; border-radius: 10px; border-right: 4px solid var(--primary-light);">
       اپلیکیشن اندروید تشخیص ۶۹ گونه حشره با استفاده از مدل <strong>YOLOv26_n</strong> و <strong>TensorFlow Lite</strong><br>
-      طراحی شده برای پژوهشگران، جنگل‌بانان و متخصصان کشاورزی
+      طراحی شده برای پژوهشگران، جنگل‌بانان و متخصصان کشاورزی<br>
+      <small style="color: var(--muted);">✅ تشخیص آفلاین • ✅ همگام‌سازی ابری • ✅ داشبورد تحلیلی تحت وب</small>
     </p>
-    
-    <!-- وضعیت‌های کلیدی - وسط‌چین -->
-    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-top: 20px;">
-      <span style="background: rgba(255,255,255,0.25); padding: 10px 20px; border-radius: 30px; font-weight: 600; font-size: 1rem;">
-        ✅ تشخیص آفلاین
-      </span>
-      <span style="background: rgba(255,255,255,0.25); padding: 10px 20px; border-radius: 30px; font-weight: 600; font-size: 1rem;">
-        ✅ همگام‌سازی ابری
-      </span>
-      <span style="background: rgba(255,255,255,0.25); padding: 10px 20px; border-radius: 30px; font-weight: 600; font-size: 1rem;">
-        ✅ داشبورد تحلیلی تحت وب
-      </span>
-    </div>
-    
   </header>
 
   <!-- Table of Contents -->
