@@ -1,4 +1,4 @@
-package com.example.insectdetector
+package com.example.plantdetector
 
 import android.Manifest
 import android.content.Intent
@@ -12,7 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.example.insectdetector.databinding.ActivityMainBinding
+import com.example.plantdetector.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

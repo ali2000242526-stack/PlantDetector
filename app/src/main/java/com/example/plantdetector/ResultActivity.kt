@@ -1,4 +1,4 @@
-package com.example.insectdetector
+package com.example.plantdetector
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -9,10 +9,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import com.example.insectdetector.databinding.ActivityResultBinding
-import com.example.insectdetector.detector.YOLODetector
-import com.example.insectdetector.utils.DataRecorder
-import com.example.insectdetector.utils.LocationHelper
+import com.example.plantdetector.databinding.ActivityResultBinding
+import com.example.plantdetector.detector.YOLODetector
+import com.example.plantdetector.utils.DataRecorder
+import com.example.plantdetector.utils.LocationHelper
 import java.text.DecimalFormat
 import java.util.concurrent.Executors
 
@@ -225,7 +225,7 @@ class ResultActivity : AppCompatActivity() {
         primaryKey: String?
     ) {
         try {
-            val insectInfo = detector.getInsectInfo(className)
+            val insectInfo = detector.getPlantInfo(className)
             val df = DecimalFormat("#.##")
             val confidencePercent = (confidence * 100)
             

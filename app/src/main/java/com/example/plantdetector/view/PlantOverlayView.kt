@@ -1,4 +1,4 @@
-package com.example.insectdetector.view
+package com.example.plantdetector.view
 
 import android.content.Context
 import android.graphics.Canvas
@@ -8,10 +8,10 @@ import android.graphics.RectF
 import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
-import com.example.insectdetector.detector.DetectionResult
+import com.example.plantdetector.detector.DetectionResult
 import java.text.DecimalFormat
 
-class InsectOverlayView @JvmOverloads constructor(
+class PlantOverlayView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

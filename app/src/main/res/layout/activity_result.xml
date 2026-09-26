@@ -37,7 +37,7 @@
                 android:contentDescription="تصویر حشره" />
 
             <!-- ✅ لایه Overlay برای Bounding Box -->
-            <com.example.insectdetector.view.InsectOverlayView
+            <com.example.plantdetector.view.InsectOverlayView
                 android:id="@+id/overlayView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

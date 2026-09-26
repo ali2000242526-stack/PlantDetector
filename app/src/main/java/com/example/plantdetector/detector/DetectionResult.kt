@@ -1,4 +1,4 @@
-package com.example.insectdetector.detector
+package com.example.plantdetector.detector
 
 import android.graphics.RectF
 

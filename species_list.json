@@ -1,0 +1,61 @@
+{
+  "fabaceae": [
+    "Astragalus albispinus", "Astragalus angustiflorus", "Astragalus argyrostachys",
+    "Astragalus asterias", "Astragalus campylanthus", "Astragalus campylorhynchus",
+    "Astragalus caragana", "Astragalus cephalanthus", "Astragalus cyclophyllon",
+    "Astragalus ebenoides", "Astragalus effesus", "Astragalus fasciculifolius",
+    "Astragalus fragiferus", "Astragalus gossypinus", "Astragalus hamosus",
+    "Astragalus ibicinus", "Astragalus kirrindicus", "Astragalus macrocephalus",
+    "Astragalus macroplematus", "Astragalus microcephalus", "Astragalus oleifolius",
+    "Astragalus ovinus", "Astragalus oxyglottis", "Astragalus podolobus",
+    "Astragalus rhodosemius", "Astragalus sp", "Astragalus teheranicus",
+    "Astragalus verus", "Coronilla varia", "Glycyrrhiza glabra",
+    "Lathyrus aphaca", "Lathyrus cassius", "Lathyrus inconspicuus",
+    "Lens orientalis", "Lotus corniculatus", "Medicago coronata",
+    "Medicago lupulina", "Medicago minima", "Medicago polymorpha",
+    "Medicago radiata", "Medicago rigidula", "Medicago sativa",
+    "Medicago scutellata", "Melilotus albus", "Melilotus indicus",
+    "Melilotus officinalis", "Onobrychis cornuta", "Onobrychis crista-galli",
+    "Onobrychis melanotricha", "Ononis reclinata", "Ononis spinosa",
+    "Pisum sativum", "Scorpiurus muricatus", "Sophora alopecuroides",
+    "Trifolium campestre", "Trifolium pratense", "Trifolium purpureum",
+    "Trifolium repens", "Trifolium resupinatum", "Trifolium tomentosum",
+    "Trigonella caerulescens", "Trigonella monantha", "Trigonella spruneriana",
+    "Trigonella stellata", "Vicia amphicarpa", "Vicia narbonensis",
+    "Vicia peregrina", "Vicia variabilis", "Vicia villosa"
+  ],
+  "lamiaceae": [
+    "Acinos graveolens", "Ajuga chamaecistus", "Eremostachys macrophylla",
+    "Lallemantia iberica", "Lallemantia peltata", "Lamium album",
+    "Lamium amplexicaule", "Marrubium astracanicum", "Marrubium cuneatum",
+    "Marrubium vulgare", "Mentha longifolia", "Micromeria myrtifolia",
+    "Nepeta glomerulosa carmanica", "Phlomis olivieri", "Phlomis persica",
+    "Salvia ceratophylla", "Salvia hydrangea", "Salvia multicaulis",
+    "Salvia nemorosa", "Salvia palaestina", "Salvia sclarea",
+    "Salvia syriaca", "Salvia virgata", "Stachys inflata",
+    "Stachys lavandulifolia", "Stachys spectabilis", "Teucrium orientale",
+    "Teucrium polium", "Teucrium scordium", "Ziziphora capitata",
+    "Ziziphora clinopodioides", "Ziziphora tenuior"
+  ],
+  "liliaceae": [
+    "Allium atroviolaceum", "Allium hirtifolium", "Allium longisepalum",
+    "Allium scabriscapum", "Allium vineale", "Bellevalia macrobotrys",
+    "Colchicum kotschyi", "Eremurus inderiensis", "Eremurus persicus",
+    "Eremurus spectabilis", "Fritillaria gibbosa", "Fritillaria imperialis",
+    "Fritillaria persica", "Muscari inconstrictum", "Muscari neglectum",
+    "Nectaroscordum tripedale", "Ornithogalum arcuatum", "Ornithogalum narbonense",
+    "Ornithogalum orthophyllum", "Ornithogalum recurvum", "Tulipa biebersteiniana",
+    "Tulipa biflora", "Tulipa systola"
+  ],
+  "rosaceae": [
+    "Agrimonia eupatoria", "Amygdalus arabica", "Amygdalus communis",
+    "Amygdalus lycioides", "Amygdalus orientalis", "Armeniaca vulgaris",
+    "Cerasus avium", "Cerasus mahaleb", "Cerasus microcarpa",
+    "Cerasus vulgaris", "Crataegus persica", "Crataegus pseudoheterophylla",
+    "Malus domestica", "Persica vulgaris", "Potentilla reptans",
+    "Potentilla speciosa", "Prunus domestica", "Pyracantha coccinea",
+    "Pyrus communis", "Pyrus elaeagnifolia", "Pyrus syriaca",
+    "Rosa canina", "Rosa foetida", "Rosa orientalis",
+    "Sanguisorba minor", "Sorbus persica", "Spartium junceum"
+  ]
+}

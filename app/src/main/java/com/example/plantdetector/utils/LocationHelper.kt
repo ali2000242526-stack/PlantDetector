@@ -1,4 +1,4 @@
-package com.example.insectdetector.utils
+package com.example.plantdetector.utils
 
 import android.Manifest
 import android.content.Context

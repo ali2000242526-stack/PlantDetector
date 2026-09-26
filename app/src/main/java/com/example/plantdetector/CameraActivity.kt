@@ -1,4 +1,4 @@
-package com.example.insectdetector
+package com.example.plantdetector
 
 import android.Manifest
 import android.content.Intent
@@ -20,12 +20,12 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import com.example.insectdetector.databinding.ActivityCameraBinding
-import com.example.insectdetector.detector.DetectionResult
-import com.example.insectdetector.detector.YOLODetector
-import com.example.insectdetector.utils.DataRecorder
-import com.example.insectdetector.utils.LocationHelper
-import com.example.insectdetector.utils.ServerUploader
+import com.example.plantdetector.databinding.ActivityCameraBinding
+import com.example.plantdetector.detector.DetectionResult
+import com.example.plantdetector.detector.YOLODetector
+import com.example.plantdetector.utils.DataRecorder
+import com.example.plantdetector.utils.LocationHelper
+import com.example.plantdetector.utils.ServerUploader
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat

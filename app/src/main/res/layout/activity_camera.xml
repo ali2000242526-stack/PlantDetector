@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- ✅ لایه Overlay برای Bounding Box بلادرنگ -->
-    <com.example.insectdetector.view.InsectOverlayView
+    <com.example.plantdetector.view.InsectOverlayView
         android:id="@+id/overlayView"
         android:layout_width="0dp"
         android:layout_height="0dp"

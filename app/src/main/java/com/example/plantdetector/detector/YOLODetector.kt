@@ -1,11 +1,11 @@
-package com.example.insectdetector.detector
+package com.example.plantdetector.detector
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.RectF
 import android.util.Log
-import com.example.insectdetector.data.InsectDatabase
-import com.example.insectdetector.utils.Constants
+import com.example.plantdetector.data.PlantDatabase
+import com.example.plantdetector.utils.Constants
 import org.tensorflow.lite.Interpreter
 import java.io.File
 import java.io.FileInputStream
@@ -199,8 +199,8 @@ class YOLODetector(private val context: Context) {
         return detections.sortedByDescending { it.confidence }
     }
     
-    fun getInsectInfo(className: String): InsectInfo {
-        return InsectDatabase.getInfo(className)
+    fun getPlantInfo(className: String): PlantInfo {
+        return PlantDatabase.getInfo(className)
     }
     
     fun close() {
