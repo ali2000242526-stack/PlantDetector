@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.insectdetector"
+    namespace = "com.example.plantdetector"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.insectdetector"
+        applicationId = "com.example.plantdetector"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
