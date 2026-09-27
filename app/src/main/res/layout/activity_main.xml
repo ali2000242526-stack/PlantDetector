@@ -31,7 +31,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="تشخیص حشرات"
+        android:text="تشخیص گیاهان"
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="@color/primary"
@@ -45,7 +45,7 @@
         android:id="@+id/tvSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="حشره خود را عکس بگیرید یا از گالری انتخاب کنید"
+        android:text="گیاه خود را عکس بگیرید یا از گالری انتخاب کنید"
         android:textSize="14sp"
         android:textColor="@color/text_secondary"
         android:gravity="center"
@@ -153,7 +153,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="حشره را در مرکز کادر قرار دهید"
+                        android:text="گیاه را در مرکز کادر قرار دهید"
                         android:textSize="13sp"
                         android:textColor="@color/text_primary" />
 

@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.plantdetector.databinding.ActivityResultBinding
 import com.example.plantdetector.detector.YOLODetector
@@ -58,25 +57,20 @@ class ResultActivity : AppCompatActivity() {
         
         if (imageUri != null) {
             try {
-                // ✅ بارگذاری bitmap بر اساس نوع URI
                 val bitmap = loadBitmapFromUri(imageUri)
                 
                 if (bitmap != null) {
-                    binding.ivInsectImage.setImageBitmap(bitmap)
+                    binding.ivPlantImage.setImageBitmap(bitmap)
                     
-                    // ✅ تنظیم ابعاد تصویر در OverlayView
                     binding.overlayView.setImageDimensions(bitmap.width, bitmap.height)
                     binding.overlayView.setCameraMode(false)
                     
                     if (className == null || className.isEmpty()) {
-                        // ✅ از گالری آمده و نیاز به تشخیص دارد
                         detectInImage(bitmap)
                     } else if (fromCamera) {
-                        // ✅ از دوربین آمده - رسم Bounding Box با تشخیص مجدد
                         drawBoundingBoxFromImage(bitmap)
                         displayResults(className, confidence, latitude, longitude, primaryKey)
                     } else {
-                        // حالت پیش‌فرض
                         displayResults(className, confidence, latitude, longitude, primaryKey)
                     }
                 } else {
@@ -95,17 +89,15 @@ class ResultActivity : AppCompatActivity() {
     }
     
     /**
-     * ✅ بارگذاری Bitmap از URI (پشتیبانی از file:// و content://)
+     * 🌱 بارگذاری Bitmap از URI (پشتیبانی از file:// و content://)
      */
     private fun loadBitmapFromUri(uriString: String): Bitmap? {
         return try {
             if (uriString.startsWith("file://")) {
-                // ✅ بارگذاری از فایل محلی (از دوربین)
                 val filePath = Uri.parse(uriString).path
                 Log.d(TAG, "بارگذاری از فایل: $filePath")
                 BitmapFactory.decodeFile(filePath)
             } else {
-                // ✅ بارگذاری از گالری (content://)
                 Log.d(TAG, "بارگذاری از گالری: $uriString")
                 val inputStream = contentResolver.openInputStream(Uri.parse(uriString))
                 val bitmap = BitmapFactory.decodeStream(inputStream)
@@ -119,7 +111,7 @@ class ResultActivity : AppCompatActivity() {
     }
     
     /**
-     * ✅ تشخیص از تصویر (از گالری)
+     * 🌱 تشخیص از تصویر (از گالری)
      */
     private fun detectInImage(bitmap: Bitmap) {
         binding.progressBar.isVisible = true
@@ -134,7 +126,6 @@ class ResultActivity : AppCompatActivity() {
                     if (results.isNotEmpty()) {
                         val topResult = results[0]
                         
-                        // ✅ نمایش Bounding Box روی تصویر
                         binding.overlayView.setDetections(results)
                         
                         if (topResult.confidence >= 0.50f) {
@@ -177,8 +168,8 @@ class ResultActivity : AppCompatActivity() {
                             binding.tvClassName.text = "تشخیص پایین: ${String.format("%.1f", topResult.confidence * 100)}٪"
                         }
                     } else {
-                        Toast.makeText(this, "حشره‌ای تشخیص داده نشد", Toast.LENGTH_SHORT).show()
-                        binding.tvClassName.text = "حشره‌ای تشخیص داده نشد"
+                        Toast.makeText(this, getString(R.string.no_plant_detected), Toast.LENGTH_SHORT).show()
+                        binding.tvClassName.text = getString(R.string.no_plant_detected)
                     }
                 }
             } catch (e: Exception) {
@@ -192,12 +183,11 @@ class ResultActivity : AppCompatActivity() {
     }
     
     /**
-     * ✅ رسم Bounding Box برای تصاویر از دوربین
+     * 🌱 رسم Bounding Box برای تصاویر از دوربین
      */
     private fun drawBoundingBoxFromImage(bitmap: Bitmap) {
         executor.execute {
             try {
-                // اجرای تشخیص برای به دست آوردن Bounding Box
                 val results = detector.detect(bitmap)
                 
                 runOnUiThread {
@@ -215,7 +205,7 @@ class ResultActivity : AppCompatActivity() {
     }
     
     /**
-     * ✅ نمایش نتایج تشخیص
+     * 🌱 نمایش نتایج تشخیص
      */
     private fun displayResults(
         className: String,
@@ -225,20 +215,20 @@ class ResultActivity : AppCompatActivity() {
         primaryKey: String?
     ) {
         try {
-            val insectInfo = detector.getPlantInfo(className)
+            val plantInfo = detector.getPlantInfo(className)
             val df = DecimalFormat("#.##")
             val confidencePercent = (confidence * 100)
             
             binding.apply {
-                tvClassName.text = insectInfo.name
-                tvScientificName.text = insectInfo.scientificName
-                tvConfidence.text = "میزان اطمینان: ${df.format(confidencePercent)}٪"
-                tvFamily.text = "خانواده: ${insectInfo.family}"
-                tvDescription.text = insectInfo.description
-                tvHabitat.text = "زیستگاه: ${insectInfo.habitat}"
-                tvDiet.text = "تغذیه: ${insectInfo.diet}"
-                tvLifecycle.text = "چرخه زندگی: ${insectInfo.lifecycle}"
-                tvFacts.text = insectInfo.interestingFacts
+                tvClassName.text = plantInfo.name
+                tvScientificName.text = plantInfo.scientificName
+                tvConfidence.text = getString(R.string.confidence_format, df.format(confidencePercent))
+                tvFamily.text = getString(R.string.family_format, plantInfo.family)
+                tvDescription.text = plantInfo.description
+                tvHabitat.text = getString(R.string.habitat_format, plantInfo.habitat)
+                tvUses.text = getString(R.string.uses_format, plantInfo.uses)
+                tvFlowering.text = getString(R.string.flowering_format, plantInfo.flowering)
+                tvFacts.text = plantInfo.interestingFacts
                 
                 // نمایش کلید اصلی
                 if (!primaryKey.isNullOrEmpty()) {
@@ -269,9 +259,10 @@ class ResultActivity : AppCompatActivity() {
                     locationCard.isVisible = false
                 }
                 
-                if (insectInfo.isDangerous) {
+                // ⚠️ هشدار برای گونه‌های در معرض خطر
+                if (plantInfo.isEndangered) {
                     warningCard.isVisible = true
-                    tvWarning.text = "⚠️ این حشره ممکن است خطرناک باشد"
+                    tvWarning.text = getString(R.string.warning_endangered)
                 } else {
                     warningCard.isVisible = false
                 }

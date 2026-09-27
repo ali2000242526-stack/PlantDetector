@@ -1,30 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">تشخیص گیاهان</string>
-    
-    <!-- ✅ متن‌های جدید -->
+  
+    <!-- ✅ اطلاعات مرکز و توسعه‌دهنده -->
     <string name="center_name">مرکز تحقیقات و آموزش کشاورزی و منابع طبیعی چهارمحال و بختیاری</string>
     <string name="department_name">بخش تحقیقات جنگل و مرتع</string>
-    <string name="developer_name">توسعه دهنده: تورج مختارپور پژوهشگر</string>
+    <string name="developer_name">توسعه‌دهنده: فرید کریمی</string>  <!-- ⚠️ نام خودتان را بنویسید -->
     
-    <!-- سایر رشته‌ها -->
+    <!-- ✅ دکمه‌ها و عملیات -->
     <string name="take_photo">📷 باز کردن دوربین</string>
     <string name="select_gallery">🖼️ انتخاب از گالری</string>
     <string name="capture">📸</string>
     <string name="cancel">✕</string>
     <string name="back">بازگشت</string>
+    
+    <!-- ✅ فرمت‌های نمایش اطلاعات (هماهنگ با PlantInfo) -->
     <string name="confidence_format">میزان اطمینان: %s٪</string>
     <string name="family_format">خانواده: %s</string>
     <string name="habitat_format">زیستگاه: %s</string>
-    <string name="diet_format">تغذیه: %s</string>
-    <string name="lifecycle_format">چرخه زندگی: %s</string>
+    <string name="uses_format">کاربردها: %s</string>
+    <string name="flowering_format">زمان گلدهی: %s</string>
+    
+    <!-- ✅ عنوان‌ها -->
     <string name="description_title">توضیحات</string>
     <string name="facts_title">نکات جالب</string>
-    <string name="warning_dangerous">⚠️ این گیاه ممکن است خطرناک باشد</string>
-    <string name="no_insect_detected">گیاه‌ای تشخیص داده نشد</string>
+    
+    <!-- ✅ هشدارها -->
+    <string name="warning_poisonous">⚠️ این گیاه ممکن است سمی باشد</string>
+    <string name="warning_endangered">🔴 این گیاه در فهرست گونه‌های در معرض خطر است</string>
+    <string name="no_plant_detected">گیاهی تشخیص داده نشد</string>
+    
+    <!-- ✅ خطاها و دسترسی‌ها -->
     <string name="camera_permission_required">دسترسی دوربین لازم است</string>
     <string name="permissions_not_granted">دسترسی‌ها اعطا نشدند</string>
     <string name="photo_error">خطا در عکس‌برداری</string>
+    
+    <!-- ✅ سایر -->
     <string name="subtitle">گیاه خود را عکس بگیرید یا از گالری انتخاب کنید</string>
     <string name="detecting">در حال تشخیص...</string>
 </resources>

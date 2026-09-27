@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="#F5F5F5"
+    android:layoutDirection="rtl"
+    tools:context=".ResultActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,45 +14,57 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- ProgressBar -->
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
+        <!-- 🌱 هدر با عنوان -->
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
+            android:text="🌱 نتیجه تشخیص"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#2E7D32"
+            android:gravity="center"
             android:layout_marginBottom="16dp" />
 
-        <!-- ✅ کانتینر تصویر با Overlay -->
-        <FrameLayout
-            android:id="@+id/imageContainer"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginBottom="16dp">
-
-            <!-- تصویر حشره -->
-            <ImageView
-                android:id="@+id/ivInsectImage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:contentDescription="تصویر حشره" />
-
-            <!-- ✅ لایه Overlay برای Bounding Box -->
-            <com.example.plantdetector.view.InsectOverlayView
-                android:id="@+id/overlayView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </FrameLayout>
-
-        <!-- کارت اطلاعات اصلی -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- 🖼️ کادر تصویر گیاه با Overlay -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
             android:layout_marginBottom="16dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ivPlantImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="تصویر گیاه" />
+
+                <com.example.plantdetector.view.PlantOverlayView
+                    android:id="@+id/overlayView"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+            </FrameLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 📋 کارت اطلاعات اصلی -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            android:layout_marginBottom="12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -58,71 +72,83 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
+                <!-- نام رایج -->
                 <TextView
                     android:id="@+id/tvClassName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="24sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
-                    android:textColor="@color/primary" />
+                    android:textColor="#1B5E20"
+                    tools:text="شبدر سفید" />
 
+                <!-- نام علمی -->
                 <TextView
                     android:id="@+id/tvScientificName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textStyle="italic"
-                    android:textColor="@color/text_secondary"
-                    android:layout_marginTop="4dp" />
+                    android:textColor="#558B2F"
+                    android:layout_marginTop="4dp"
+                    tools:text="Trifolium repens" />
 
+                <!-- میزان اطمینان -->
                 <TextView
                     android:id="@+id/tvConfidence"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/success"
-                    android:layout_marginTop="8dp" />
+                    android:textSize="16sp"
+                    android:textColor="#FF6F00"
+                    android:layout_marginTop="12dp"
+                    tools:text="میزان اطمینان: 92.5٪" />
 
+                <!-- خانواده -->
                 <TextView
                     android:id="@+id/tvFamily"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:layout_marginTop="8dp" />
-
+                    android:textSize="16sp"
+                    android:textColor="#33691E"
+                    android:layout_marginTop="8dp"
+                    tools:text="خانواده: Fabaceae (باقلائیان)" />
             </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- کارت هشدار خطر -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- ⚠️ کارت هشدار (گونه‌های در معرض خطر) -->
+        <androidx.cardview.widget.CardView
             android:id="@+id/warningCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
-            app:cardBackgroundColor="@color/warning"
-            android:visibility="gone"
-            android:layout_marginBottom="16dp">
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#FFF3E0"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone">
 
-            <TextView
-                android:id="@+id/tvWarning"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:padding="16dp">
 
-        </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/tvWarning"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="#E65100"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-        <!-- کارت توضیحات -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- 📝 کارت توضیحات -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -131,69 +157,63 @@
                 android:padding="16dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="توضیحات"
+                    android:text="📝 توضیحات"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    android:textColor="#2E7D32"
                     android:layout_marginBottom="8dp" />
 
                 <TextView
                     android:id="@+id/tvDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
+                    android:textSize="15sp"
+                    android:textColor="#424242"
                     android:lineSpacingExtra="4dp" />
-
             </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- کارت زیستگاه و تغذیه -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- 🏞️ کارت زیستگاه -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🏞️ زیستگاه"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#2E7D32"
+                    android:layout_marginBottom="8dp" />
 
                 <TextView
                     android:id="@+id/tvHabitat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:layout_marginBottom="8dp" />
-
-                <TextView
-                    android:id="@+id/tvDiet"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:layout_marginBottom="8dp" />
-
-                <TextView
-                    android:id="@+id/tvLifecycle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp" />
-
+                    android:textSize="15sp"
+                    android:textColor="#424242" />
             </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- کارت نکات جالب -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- 💊 کارت کاربردها -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -202,73 +222,97 @@
                 android:padding="16dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="نکات جالب"
+                    android:text="💊 کاربردها"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    android:textColor="#2E7D32"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tvUses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#424242" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 🌸 کارت زمان گلدهی -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            android:layout_marginBottom="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🌸 زمان گلدهی"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#2E7D32"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tvFlowering"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#424242" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- ✨ کارت نکات جالب -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            android:layout_marginBottom="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="✨ نکات جالب"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#2E7D32"
                     android:layout_marginBottom="8dp" />
 
                 <TextView
                     android:id="@+id/tvFacts"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
+                    android:textSize="15sp"
+                    android:textColor="#424242"
                     android:lineSpacingExtra="4dp" />
-
             </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- کارت کلید اصلی -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/primaryKeyCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="#E8F5E9"
-            android:visibility="gone"
-            android:layout_marginBottom="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🔑 کلید اصلی ثبت"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/primary_dark"
-                    android:layout_marginBottom="4dp" />
-
-                <TextView
-                    android:id="@+id/tvPrimaryKey"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="@color/primary"
-                    android:textStyle="bold"
-                    android:fontFamily="monospace" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- کارت موقعیت مکانی -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- 📍 کارت موقعیت مکانی -->
+        <androidx.cardview.widget.CardView
             android:id="@+id/locationCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
-            app:cardBackgroundColor="#E3F2FD"
-            android:visibility="gone"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="12dp"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -277,47 +321,85 @@
                 android:padding="16dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="📍 موقعیت جغرافیایی"
-                    android:textSize="16sp"
+                    android:text="📍 موقعیت مکانی"
+                    android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@color/primary_dark"
-                    android:layout_marginBottom="4dp" />
+                    android:textColor="#2E7D32"
+                    android:layout_marginBottom="8dp" />
 
                 <TextView
                     android:id="@+id/tvLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="@color/primary"
-                    android:layout_marginBottom="8dp" />
+                    android:textSize="15sp"
+                    android:textColor="#424242" />
 
                 <TextView
                     android:id="@+id/tvMapsLink"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="🗺️ مشاهده در نقشه Google Maps"
-                    android:textSize="14sp"
-                    android:textColor="@color/accent"
+                    android:text="🗺️ مشاهده در Google Maps"
+                    android:textSize="15sp"
+                    android:textColor="#1976D2"
                     android:textStyle="bold"
-                    android:padding="8dp"
-                    android:background="?attr/selectableItemBackground" />
-
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:focusable="true" />
             </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-        </com.google.android.material.card.MaterialCardView>
+        <!-- 🔑 کارت کلید اصلی -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/primaryKeyCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#E3F2FD"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone">
 
-        <!-- دکمه بازگشت -->
-        <com.google.android.material.button.MaterialButton
+            <TextView
+                android:id="@+id/tvPrimaryKey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="#0D47A1"
+                android:padding="16dp" />
+        </androidx.cardview.widget.CardView>
+
+        <!-- 🔘 دکمه بازگشت -->
+        <Button
             android:id="@+id/btnBack"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="بازگشت"
+            android:layout_height="wrap_content"
+            android:text="🔙 بازگشت"
             android:textSize="16sp"
-            app:cornerRadius="12dp"
+            android:backgroundTint="#2E7D32"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp" />
 
-    </LinearLayout>
+        <!-- 🏛️ اطلاعات مرکز تحقیقات -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/center_name"
+            android:textSize="12sp"
+            android:textColor="#757575"
+            android:gravity="center"
+            android:layout_marginTop="8dp" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/department_name"
+            android:textSize="12sp"
+            android:textColor="#757575"
+            android:gravity="center"
+            android:layout_marginTop="4dp" />
+
+    </LinearLayout>
 </ScrollView>
