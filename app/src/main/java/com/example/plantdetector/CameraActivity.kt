@@ -3,11 +3,7 @@ package com.example.plantdetector
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.ImageFormat
-import android.graphics.Rect
-import android.graphics.YuvImage
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -25,9 +21,7 @@ import com.example.plantdetector.databinding.ActivityCameraBinding
 import com.example.plantdetector.detector.DetectionResult
 import com.example.plantdetector.detector.YOLODetector
 import com.example.plantdetector.utils.DataRecorder
-import com.example.plantdetector.utils.LocationHelper
 import com.example.plantdetector.utils.ServerUploader
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -39,7 +33,6 @@ class CameraActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCameraBinding
     private lateinit var detector: YOLODetector
-    private lateinit var locationHelper: LocationHelper
     private lateinit var dataRecorder: DataRecorder
     private lateinit var serverUploader: ServerUploader
 
@@ -51,7 +44,6 @@ class CameraActivity : AppCompatActivity() {
     private var frameCount = 0
     private var lastDetectionTime = 0L
     private var lastValidDetection: DetectionResult? = null
-    private var currentLocation: android.location.Location? = null
     private var currentPhotoFile: File? = null
     private lateinit var prefs: android.content.SharedPreferences
 
@@ -60,9 +52,7 @@ class CameraActivity : AppCompatActivity() {
         private const val DETECTION_INTERVAL_MS = 500L
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(
-            Manifest.permission.CAMERA,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
+            Manifest.permission.CAMERA
         )
     }
 
@@ -82,14 +72,8 @@ class CameraActivity : AppCompatActivity() {
             return
         }
 
-        locationHelper = LocationHelper(this)
         dataRecorder = DataRecorder(this)
         serverUploader = ServerUploader(this)
-
-        locationHelper.startLocationUpdates { location ->
-            currentLocation = location
-            Log.d(TAG, "📍 موقعیت: ${location.latitude}, ${location.longitude}")
-        }
 
         if (allPermissionsGranted()) {
             startCamera()
@@ -225,7 +209,7 @@ class CameraActivity : AppCompatActivity() {
             outputOptions,
             ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageSavedCallback {
-                override fun onError(exc: ImageCaptureException) {
+                override fun onError(exc: androidx.camera.core.ImageCaptureException) {
                     Log.e(TAG, "خطا در ذخیره: ${exc.message}", exc)
                     runOnUiThread {
                         binding.btnCapture.isEnabled = true
@@ -235,8 +219,9 @@ class CameraActivity : AppCompatActivity() {
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val userName = prefs.getString("user_name", "نامشخص") ?: "نامشخص"
-                    val latitude = currentLocation?.latitude ?: 0.0
-                    val longitude = currentLocation?.longitude ?: 0.0
+                    // GPS موقتاً غیرفعال - مقدار پیش‌فرض
+                    val latitude = 0.0
+                    val longitude = 0.0
 
                     val bitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
 
@@ -312,10 +297,6 @@ class CameraActivity : AppCompatActivity() {
         super.onDestroy()
         cameraExecutor.shutdown()
         analysisExecutor.shutdown()
-        locationHelper.stopLocationUpdates()
         detector.close()
     }
 }
-
-// Import مورد نیاز برای ImageCaptureException
-private typealias ImageCaptureException = androidx.camera.core.ImageCaptureException
