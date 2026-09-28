@@ -154,7 +154,7 @@ class CameraActivity : AppCompatActivity() {
 
             if (results.isNotEmpty()) {
                 val topResult = results[0]
-                if (topResult.confidence >= 0.50f) {
+                if (topResult.confidence >= 0.10f) {
                     lastValidDetection = topResult
 
                     runOnUiThread {
