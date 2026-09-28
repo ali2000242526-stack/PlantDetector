@@ -1,178 +1,166 @@
 package com.example.plantdetector.utils
 
 object Constants {
-    // ⚙️ تنظیمات مدل
-    const val INPUT_SIZE = 224          // اندازه ورودی مدل (باید با آموزش مطابقت داشته باشد)
-    const val CONFIDENCE_THRESHOLD = 0.25f  // آستانه اطمینان تشخیص
+    // ⚙️ اندازه ورودی مدل (از args.yaml استخراج شده)
+    const val INPUT_SIZE = 256
+    const val CONFIDENCE_THRESHOLD = 0.25f
     
-    // ⚠️ مهم: ترتیب این لیست باید دقیقاً مطابق با ترتیب کلاس‌ها در مدل باشد
-    // پس از آماده شدن مدل نهایی، با اسکریپت extract_classes.py بررسی می‌شود
+    /**
+     * 🌱 لیست 151 گونه گیاهی
+     * ترتیب مطابق با species_family_map.json
+     * ⚠️ تغییر ترتیب = تشخیص اشتباه!
+     */
     val CLASS_NAMES = listOf(
-        // ═══════════════════════════════════════════════════════
-        // خانواده Fabaceae (باقلائیان) - ۶۹ گونه
-        // ═══════════════════════════════════════════════════════
-        "Astragalus_albispinus",
-        "Astragalus_angustiflorus",
-        "Astragalus_argyrostachys",
-        "Astragalus_asterias",
-        "Astragalus_campylanthus",
-        "Astragalus_campylorhynchus",
-        "Astragalus_caragana",
-        "Astragalus_cephalanthus",
-        "Astragalus_cyclophyllon",
-        "Astragalus_ebenoides",
-        "Astragalus_effesus",
-        "Astragalus_fasciculifolius",
-        "Astragalus_fragiferus",
-        "Astragalus_gossypinus",
-        "Astragalus_hamosus",
-        "Astragalus_ibicinus",
-        "Astragalus_kirrindicus",
-        "Astragalus_macrocephalus",
-        "Astragalus_macroplematus",
-        "Astragalus_microcephalus",
-        "Astragalus_oleifolius",
-        "Astragalus_ovinus",
-        "Astragalus_oxyglottis",
-        "Astragalus_podolobus",
-        "Astragalus_rhodosemius",
-        "Astragalus_sp",
-        "Astragalus_teheranicus",
-        "Astragalus_verus",
-        "Coronilla_varia",
-        "Glycyrrhiza_glabra",
-        "Lathyrus_aphaca",
-        "Lathyrus_cassius",
-        "Lathyrus_inconspicuus",
-        "Lens_orientalis",
-        "Lotus_corniculatus",
-        "Medicago_coronata",
-        "Medicago_lupulina",
-        "Medicago_minima",
-        "Medicago_polymorpha",
-        "Medicago_radiata",
-        "Medicago_rigidula",
-        "Medicago_sativa",
-        "Medicago_scutellata",
-        "Melilotus_albus",
-        "Melilotus_indicus",
-        "Melilotus_officinalis",
-        "Onobrychis_cornuta",
-        "Onobrychis_crista-galli",
-        "Onobrychis_melanotricha",
-        "Ononis_reclinata",
-        "Ononis_spinosa",
-        "Pisum_sativum",
-        "Scorpiurus_muricatus",
-        "Sophora_alopecuroides",
-        "Trifolium_campestre",
-        "Trifolium_pratense",
-        "Trifolium_purpureum",
-        "Trifolium_repens",
-        "Trifolium_resupinatum",
-        "Trifolium_tomentosum",
-        "Trigonella_caerulescens",
-        "Trigonella_monantha",
-        "Trigonella_Spruneriana",
-        "Trigonella_stellata",
-        "Vicia_amphicarpa",
-        "Vicia_narbonensis",
-        "Vicia_peregrina",
-        "Vicia_variabilis",
-        "Vicia_villosa",
-        
-        // ═══════════════════════════════════════════════════════
-        // خانواده Lamiaceae (نعنائیان) - ۳۲ گونه
-        // ═══════════════════════════════════════════════════════
-        "Acinos_graveolens",
-        "Ajuga_chamaecistus",
-        "Eremostachys_macrophylla",
-        "Lallemantia_iberica",
-        "Lallemantia_peltata",
-        "Lamium_album",
-        "Lamium_amplexicaule",
-        "Marrubium_astracanicum",
-        "Marrubium_cuneatum",
-        "Marrubium_vulgare",
-        "Mentha_longifolia",
-        "Micromeria_myrtifolia",
-        "Nepeta_glomerulosa_carmanica",
-        "Phlomis_olivieri",
-        "Phlomis_persica",
-        "Salvia_ceratophylla",
-        "Salvia_hydrangea",
-        "Salvia_multicaulis",
-        "Salvia_nemorosa",
-        "Salvia_palaestina",
-        "Salvia_sclarea",
-        "Salvia_syriaca",
-        "Salvia_virgata",
-        "Stachys_inflata",
-        "Stachys_lavandulifolia",
-        "Stachys_spectabilis",
-        "Teucrium_orientale",
-        "Teucrium_polium",
-        "Teucrium_scordium",
-        "Ziziphora_capitata",
-        "Ziziphora_clinopodioides",
-        "Ziziphora_tenuior",
-        
-        // ═══════════════════════════════════════════════════════
-        // خانواده Liliaceae (سوسنیان) - ۲۳ گونه
-        // ═══════════════════════════════════════════════════════
-        "Allium_atroviolaceum",
-        "Allium_hirtifolium",
-        "Allium_longisepalum",
-        "Allium_scabriscapum",
-        "Allium_vineale",
-        "Bellevalia_macrobotrys",
-        "Colchicum_kotschyi",
-        "Eremurus_inderiensis",
-        "Eremurus_persicus",
-        "Eremurus_spectabilis",
-        "Fritillaria_gibbosa",
-        "Fritillaria_imperialis",
-        "Fritillaria_persica",
-        "Muscari_inconstrictum",
-        "Muscari_neglectum",
-        "Nectaroscordum_tripedale",
-        "Ornithogalum_arcuatum",
-        "Ornithogalum_narbonense",
-        "Ornithogalum_orthophyllum",
-        "Ornithogalum_recurvum",
-        "Tulipa_biebersteiniana",
-        "Tulipa_biflora",
-        "Tulipa_systola",
-        
-        // ═══════════════════════════════════════════════════════
-        // خانواده Rosaceae (گل‌سرخیان) - ۲۷ گونه
-        // ═══════════════════════════════════════════════════════
-        "Agrimonia_eupatoria",
-        "Amygdalus_arabica",
-        "Amygdalus_communis",
-        "Amygdalus_lycioides",
-        "Amygdalus_orientalis",
-        "Armeniaca_vulgaris",
-        "Cerasus_avium",
-        "Cerasus_mahaleb",
-        "Cerasus_microcarpa",
-        "Cerasus_vulgaris",
-        "Crataegus_persica",
-        "Crataegus_pseudoheterophylla",
-        "Malus_domestica",
-        "Persica_vulgaris",
-        "Potentilla_reptans",
-        "Potentilla_speciosa",
-        "Prunus_domestica",
-        "Pyracantha_coccinea",
-        "Pyrus_communis",
-        "Pyrus_elaeagnifolia",
-        "Pyrus_syriaca",
-        "Rosa_canina",
-        "Rosa_foetida",
-        "Rosa_orientalis",
-        "Sanguisorba_minor",
-        "Sorbus_persica",
-        "Spartium_junceum"
+        "Trigonella_Spruneriana",  // 0: Fabaceae
+        "Trifolium_tomentosum",  // 1: Fabaceae
+        "Medicago_radiata",  // 2: Fabaceae
+        "Medicago_coronata",  // 3: Fabaceae
+        "Lotus_corniculatus",  // 4: Fabaceae
+        "Astragalus_cyclophyllon",  // 5: Fabaceae
+        "Astragalus_macrocephalus",  // 6: Fabaceae
+        "Melilotus_indicus",  // 7: Fabaceae
+        "Astragalus_rhodosemius",  // 8: Fabaceae
+        "Sophora_alopecuroides",  // 9: Fabaceae
+        "Vicia_villosa",  // 10: Fabaceae
+        "Astragalus_teheranicus",  // 11: Fabaceae
+        "Astragalus_caragana",  // 12: Fabaceae
+        "Ononis_spinosa",  // 13: Fabaceae
+        "Ononis_reclinata",  // 14: Fabaceae
+        "Astragalus_macroplematus",  // 15: Fabaceae
+        "Astragalus_effesus",  // 16: Fabaceae
+        "Onobrychis_cornuta",  // 17: Fabaceae
+        "Astragalus_asterias",  // 18: Fabaceae
+        "Astragalus_gossypinus",  // 19: Fabaceae
+        "Medicago_lupulina",  // 20: Fabaceae
+        "Trifolium_repens",  // 21: Fabaceae
+        "Vicia_peregrina",  // 22: Fabaceae
+        "Astragalus_ibicinus",  // 23: Fabaceae
+        "Melilotus_officinalis",  // 24: Fabaceae
+        "Astragalus_oleifolius",  // 25: Fabaceae
+        "Lathyrus_cassius",  // 26: Fabaceae
+        "Trigonella_monantha",  // 27: Fabaceae
+        "Onobrychis_melanotricha",  // 28: Fabaceae
+        "Vicia_variabilis",  // 29: Fabaceae
+        "Astragalus_cephalanthus",  // 30: Fabaceae
+        "Lathyrus_inconspicuus",  // 31: Fabaceae
+        "Lathyrus_aphaca",  // 32: Fabaceae
+        "Medicago_scutellata",  // 33: Fabaceae
+        "Trigonella_caerulescens",  // 34: Fabaceae
+        "Pisum_sativum",  // 35: Fabaceae
+        "Astragalus_sp",  // 36: Fabaceae
+        "Astragalus_fragiferus",  // 37: Fabaceae
+        "Astragalus_ovinus",  // 38: Fabaceae
+        "Glycyrrhiza_glabra",  // 39: Fabaceae
+        "Trifolium_purpureum",  // 40: Fabaceae
+        "Astragalus_campylorhynchus",  // 41: Fabaceae
+        "Astragalus_campylanthus",  // 42: Fabaceae
+        "Onobrychis_crista-galli",  // 43: Fabaceae
+        "Astragalus_argyrostachys",  // 44: Fabaceae
+        "Astragalus_verus",  // 45: Fabaceae
+        "Medicago_polymorpha",  // 46: Fabaceae
+        "Melilotus_albus",  // 47: Fabaceae
+        "Trifolium_resupinatum",  // 48: Fabaceae
+        "Astragalus_fasciculifolius",  // 49: Fabaceae
+        "Astragalus_albispinus",  // 50: Fabaceae
+        "Astragalus_oxyglottis",  // 51: Fabaceae
+        "Astragalus_microcephalus",  // 52: Fabaceae
+        "Astragalus_angustiflorus",  // 53: Fabaceae
+        "Astragalus_hamosus",  // 54: Fabaceae
+        "Astragalus_kirrindicus",  // 55: Fabaceae
+        "Coronilla_varia",  // 56: Fabaceae
+        "Vicia_amphicarpa",  // 57: Fabaceae
+        "Lens_orientalis",  // 58: Fabaceae
+        "Trigonella_stellata",  // 59: Fabaceae
+        "Astragalus_podolobus",  // 60: Fabaceae
+        "Medicago_sativa",  // 61: Fabaceae
+        "Trifolium_pratense",  // 62: Fabaceae
+        "Medicago_minima",  // 63: Fabaceae
+        "Astragalus_ebenoides",  // 64: Fabaceae
+        "Medicago_rigidula",  // 65: Fabaceae
+        "Vicia_narbonensis",  // 66: Fabaceae
+        "Trifolium_campestre",  // 67: Fabaceae
+        "Scorpiurus_muricatus",  // 68: Fabaceae
+        "Teucrium_orientale",  // 69: Lamiaceae
+        "Stachys_spectabilis",  // 70: Lamiaceae
+        "Teucrium_polium",  // 71: Lamiaceae
+        "Phlomis_persica",  // 72: Lamiaceae
+        "Acinos_graveolens",  // 73: Lamiaceae
+        "Eremostachys_macrophylla",  // 74: Lamiaceae
+        "Salvia_syriaca",  // 75: Lamiaceae
+        "Salvia_nemorosa",  // 76: Lamiaceae
+        "Stachys_lavandulifolia",  // 77: Lamiaceae
+        "Lallemantia_iberica",  // 78: Lamiaceae
+        "Salvia_palaestina",  // 79: Lamiaceae
+        "Micromeria_myrtifolia",  // 80: Lamiaceae
+        "Phlomis_olivieri",  // 81: Lamiaceae
+        "Salvia_virgata",  // 82: Lamiaceae
+        "Marrubium_astracanicum",  // 83: Lamiaceae
+        "Ziziphora_tenuior",  // 84: Lamiaceae
+        "Salvia_hydrangea",  // 85: Lamiaceae
+        "Salvia_ceratophylla",  // 86: Lamiaceae
+        "Teucrium_scordium",  // 87: Lamiaceae
+        "Nepeta_glomerulosa_carmanica",  // 88: Lamiaceae
+        "Lamium_album",  // 89: Lamiaceae
+        "Ajuga_chamaecistus",  // 90: Lamiaceae
+        "Stachys_inflata",  // 91: Lamiaceae
+        "Ziziphora_capitata",  // 92: Lamiaceae
+        "Salvia_sclarea",  // 93: Lamiaceae
+        "Lallemantia_peltata",  // 94: Lamiaceae
+        "Marrubium_cuneatum",  // 95: Lamiaceae
+        "Salvia_multicaulis",  // 96: Lamiaceae
+        "Lamium_amplexicaule",  // 97: Lamiaceae
+        "Ziziphora_clinopodioides",  // 98: Lamiaceae
+        "Mentha_longifolia",  // 99: Lamiaceae
+        "Marrubium_vulgare",  // 100: Lamiaceae
+        "Allium_vineale",  // 101: Liliaceae
+        "Eremurus_persicus",  // 102: Liliaceae
+        "Fritillaria_imperialis",  // 103: Liliaceae
+        "Eremurus_inderiensis",  // 104: Liliaceae
+        "Ornithogalum_orthophyllum",  // 105: Liliaceae
+        "Tulipa_biebersteiniana",  // 106: Liliaceae
+        "Fritillaria_gibbosa",  // 107: Liliaceae
+        "Muscari_neglectum",  // 108: Liliaceae
+        "Nectaroscordum_tripedale",  // 109: Liliaceae
+        "Bellevalia_macrobotrys",  // 110: Liliaceae
+        "Ornithogalum_narbonense",  // 111: Liliaceae
+        "Tulipa_systola",  // 112: Liliaceae
+        "Colchicum_kotschyi",  // 113: Liliaceae
+        "Muscari_inconstrictum",  // 114: Liliaceae
+        "Ornithogalum_recurvum",  // 115: Liliaceae
+        "Allium_longisepalum",  // 116: Liliaceae
+        "Allium_atroviolaceum",  // 117: Liliaceae
+        "Eremurus_spectabilis",  // 118: Liliaceae
+        "Fritillaria_persica",  // 119: Liliaceae
+        "Allium_scabriscapum",  // 120: Liliaceae
+        "Allium_hirtifolium",  // 121: Liliaceae
+        "Ornithogalum_arcuatum",  // 122: Liliaceae
+        "Tulipa_biflora",  // 123: Liliaceae
+        "Pyrus_syriaca",  // 124: Rosaceae
+        "Potentilla_speciosa",  // 125: Rosaceae
+        "Crataegus_persica",  // 126: Rosaceae
+        "Sorbus_persica",  // 127: Rosaceae
+        "Rosa_canina",  // 128: Rosaceae
+        "Armeniaca_vulgaris",  // 129: Rosaceae
+        "Pyrus_elaeagnifolia",  // 130: Rosaceae
+        "Persica_vulgaris",  // 131: Rosaceae
+        "Amygdalus_lycioides",  // 132: Rosaceae
+        "Prunus_domestica",  // 133: Rosaceae
+        "Pyracantha_coccinea",  // 134: Rosaceae
+        "Spartium_junceum",  // 135: Rosaceae
+        "Cerasus_avium",  // 136: Rosaceae
+        "Cerasus_microcarpa",  // 137: Rosaceae
+        "Pyrus_communis",  // 138: Rosaceae
+        "Cerasus_mahaleb",  // 139: Rosaceae
+        "Amygdalus_arabica",  // 140: Rosaceae
+        "Malus_domestica",  // 141: Rosaceae
+        "Potentilla_reptans",  // 142: Rosaceae
+        "Crataegus_pseudoheterophylla",  // 143: Rosaceae
+        "Amygdalus_communis",  // 144: Rosaceae
+        "Agrimonia_eupatoria",  // 145: Rosaceae
+        "Cerasus_vulgaris",  // 146: Rosaceae
+        "Rosa_orientalis",  // 147: Rosaceae
+        "Amygdalus_orientalis",  // 148: Rosaceae
+        "Rosa_foetida",  // 149: Rosaceae
+        "Sanguisorba_minor"  // 150: Rosaceae
     )
 }

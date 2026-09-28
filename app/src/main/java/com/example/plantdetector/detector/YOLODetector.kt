@@ -12,18 +12,18 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 
+/**
+ * 🌱 تشخیص‌دهنده گیاهان با استفاده از مدل YOLO Classification
+ * این کلاس برای مدل‌های classification طراحی شده است (نه detection)
+ */
 class YOLODetector(private val context: Context) {
     
     private var interpreter: Interpreter? = null
-    private val inputSize = Constants.INPUT_SIZE
+    private val inputSize = Constants.INPUT_SIZE  // 256
     private val confidenceThreshold = Constants.CONFIDENCE_THRESHOLD
     private val classNames = Constants.CLASS_NAMES
-    
-    private var numDetections = 300
-    private var numOutputValues = 6
     
     companion object {
         private const val TAG = "YOLODetector"
@@ -35,12 +35,12 @@ class YOLODetector(private val context: Context) {
     
     private fun loadModel() {
         try {
-            Log.d(TAG, "شروع بارگذاری مدل...")
+            Log.d(TAG, "🌱 شروع بارگذاری مدل classification...")
             
             val modelFile = File(context.cacheDir, "best_float16.tflite")
             
             if (!modelFile.exists()) {
-                Log.d(TAG, "کپی فایل از assets به cache...")
+                Log.d(TAG, "📋 کپی فایل از assets به cache...")
                 context.assets.open("best_float16.tflite").use { input ->
                     FileOutputStream(modelFile).use { output ->
                         input.copyTo(output)
@@ -48,7 +48,7 @@ class YOLODetector(private val context: Context) {
                 }
             }
             
-            Log.d(TAG, "اندازه مدل: ${modelFile.length()} bytes")
+            Log.d(TAG, "📊 اندازه مدل: ${modelFile.length()} bytes")
             
             val fileInputStream = FileInputStream(modelFile)
             val channel = fileInputStream.channel
@@ -61,50 +61,105 @@ class YOLODetector(private val context: Context) {
             
             interpreter = Interpreter(modelBuffer, options)
             
-            // تشخیص shape خروجی
+            // بررسی shape ورودی و خروجی
+            val inputTensor = interpreter!!.getInputTensor(0)
             val outputTensor = interpreter!!.getOutputTensor(0)
-            val shape = outputTensor.shape()
-            Log.d(TAG, "Shape خروجی: ${shape.contentToString()}")
             
-            if (shape.size == 3) {
-                numDetections = shape[1]
-                numOutputValues = shape[2]
-            }
-            
-            Log.d(TAG, "مدل با موفقیت بارگذاری شد")
-            Log.d(TAG, "تعداد تشخیص‌ها: $numDetections")
-            Log.d(TAG, "تعداد مقادیر: $numOutputValues")
+            Log.d(TAG, "📥 Shape ورودی: ${inputTensor.shape().contentToString()}")
+            Log.d(TAG, "📤 Shape خروجی: ${outputTensor.shape().contentToString()}")
+            Log.d(TAG, "🌱 مدل classification با موفقیت بارگذاری شد")
+            Log.d(TAG, "📊 تعداد کلاس‌ها: ${classNames.size}")
             
         } catch (e: Exception) {
-            Log.e(TAG, "خطا در بارگذاری مدل: ${e.message}", e)
+            Log.e(TAG, "❌ خطا در بارگذاری مدل: ${e.message}", e)
             throw e
         }
     }
     
+    /**
+     * 🌱 تشخیص گیاه در تصویر
+     * خروجی: لیستی با یک تشخیص (بهترین کلاس)
+     */
     fun detect(bitmap: Bitmap): List<DetectionResult> {
         if (interpreter == null) {
-            Log.e(TAG, "Interpreter null است!")
+            Log.e(TAG, "❌ Interpreter null است!")
             return emptyList()
         }
         
         try {
+            // تغییر اندازه تصویر به 256x256
             val resizedBitmap = Bitmap.createScaledBitmap(bitmap, inputSize, inputSize, true)
             val inputBuffer = bitmapToByteBuffer(resizedBitmap)
             
-            val outputBuffer = Array(1) {
-                Array(numDetections) { FloatArray(numOutputValues) }
-            }
+            // بافر خروجی برای classification: [1, num_classes]
+            val outputBuffer = Array(1) { FloatArray(classNames.size) }
             
             interpreter!!.run(inputBuffer, outputBuffer)
             
-            return parseDetections(outputBuffer[0], bitmap.width, bitmap.height)
+            // تبدیل خروجی به probabilities با softmax
+            val probabilities = softmax(outputBuffer[0])
+            
+            // پیدا کردن کلاس با بیشترین احتمال
+            var maxIdx = 0
+            var maxProb = 0f
+            for (i in probabilities.indices) {
+                if (probabilities[i] > maxProb) {
+                    maxProb = probabilities[i]
+                    maxIdx = i
+                }
+            }
+            
+            Log.d(TAG, "🎯 تشخیص: ${classNames[maxIdx]} با اطمینان ${String.format("%.2f", maxProb * 100)}٪")
+            
+            // اگر اطمینان بالای آستانه بود، برگردان
+            if (maxProb >= confidenceThreshold && maxIdx < classNames.size) {
+                // bounding box کل تصویر (چون classification است)
+                val fullBox = RectF(0f, 0f, bitmap.width.toFloat(), bitmap.height.toFloat())
+                
+                val result = DetectionResult(
+                    className = classNames[maxIdx],
+                    confidence = maxProb,
+                    boundingBox = fullBox,
+                    classId = maxIdx
+                )
+                
+                resizedBitmap.recycle()
+                return listOf(result)
+            }
+            
+            resizedBitmap.recycle()
+            return emptyList()
             
         } catch (e: Exception) {
-            Log.e(TAG, "خطا در تشخیص: ${e.message}", e)
+            Log.e(TAG, "❌ خطا در تشخیص: ${e.message}", e)
             return emptyList()
         }
     }
     
+    /**
+     * 🔄 Softmax برای تبدیل logits به probabilities
+     */
+    private fun softmax(logits: FloatArray): FloatArray {
+        val maxLogit = logits.maxOrNull() ?: 0f
+        val exps = FloatArray(logits.size)
+        var sum = 0f
+        
+        for (i in logits.indices) {
+            exps[i] = Math.exp((logits[i] - maxLogit).toDouble()).toFloat()
+            sum += exps[i]
+        }
+        
+        for (i in exps.indices) {
+            exps[i] /= sum
+        }
+        
+        return exps
+    }
+    
+    /**
+     * 📸 تبدیل Bitmap به ByteBuffer برای TFLite
+     * نرمال‌سازی: پیکسل‌ها به بازه [0, 1]
+     */
     private fun bitmapToByteBuffer(bitmap: Bitmap): ByteBuffer {
         val buffer = ByteBuffer.allocateDirect(4 * inputSize * inputSize * 3)
         buffer.order(ByteOrder.nativeOrder())
@@ -113,6 +168,7 @@ class YOLODetector(private val context: Context) {
         bitmap.getPixels(pixels, 0, inputSize, 0, 0, inputSize, inputSize)
         
         for (pixel in pixels) {
+            // استخراج RGB و نرمال‌سازی به [0, 1]
             buffer.putFloat(((pixel shr 16 and 0xFF) / 255.0f))
             buffer.putFloat(((pixel shr 8 and 0xFF) / 255.0f))
             buffer.putFloat(((pixel and 0xFF) / 255.0f))
@@ -122,93 +178,22 @@ class YOLODetector(private val context: Context) {
         return buffer
     }
     
-    private fun parseDetections(
-        output: Array<FloatArray>,
-        originalWidth: Int,
-        originalHeight: Int
-    ): List<DetectionResult> {
-        val detections = mutableListOf<DetectionResult>()
-        
-        val scaleX = originalWidth.toFloat() / inputSize
-        val scaleY = originalHeight.toFloat() / inputSize
-        
-        for (i in 0 until numDetections) {
-            val values = output[i]
-            
-            // فرمت [1, 300, 6]: [x, y, w, h, confidence, class_id]
-            if (numOutputValues == 6) {
-                val cx = values[0]
-                val cy = values[1]
-                val w = values[2]
-                val h = values[3]
-                val confidence = values[4]
-                val classId = values[5].toInt()
-                
-                if (confidence > confidenceThreshold && classId in classNames.indices) {
-                    val x1 = (cx - w / 2) * scaleX
-                    val y1 = (cy - h / 2) * scaleY
-                    val x2 = (cx + w / 2) * scaleX
-                    val y2 = (cy + h / 2) * scaleY
-                    
-                    detections.add(
-                        DetectionResult(
-                            className = classNames[classId],
-                            confidence = confidence,
-                            boundingBox = RectF(x1, y1, x2, y2),
-                            classId = classId
-                        )
-                    )
-                }
-            }
-            // فرمت [1, 8400, 73]: YOLO خام
-            else if (numOutputValues == 4 + classNames.size) {
-                val cx = values[0]
-                val cy = values[1]
-                val w = values[2]
-                val h = values[3]
-                
-                var maxScore = 0f
-                var maxClassIdx = 0
-                
-                for (j in 0 until classNames.size) {
-                    val score = values[4 + j]
-                    if (score > maxScore) {
-                        maxScore = score
-                        maxClassIdx = j
-                    }
-                }
-                
-                if (maxScore > confidenceThreshold) {
-                    val x1 = (cx - w / 2) * scaleX
-                    val y1 = (cy - h / 2) * scaleY
-                    val x2 = (cx + w / 2) * scaleX
-                    val y2 = (cy + h / 2) * scaleY
-                    
-                    detections.add(
-                        DetectionResult(
-                            className = classNames[maxClassIdx],
-                            confidence = maxScore,
-                            boundingBox = RectF(x1, y1, x2, y2),
-                            classId = maxClassIdx
-                        )
-                    )
-                }
-            }
-        }
-        
-        return detections.sortedByDescending { it.confidence }
-    }
-    
+    /**
+     * 🌱 دریافت اطلاعات گیاه از PlantDatabase
+     */
     fun getPlantInfo(className: String): PlantInfo {
         return PlantDatabase.getInfo(className)
     }
     
+    /**
+     * 🔒 بستن interpreter
+     */
     fun close() {
         try {
             interpreter?.close()
-            Log.d(TAG, "Interpreter بسته شد")
+            Log.d(TAG, "🔒 Interpreter بسته شد")
         } catch (e: Exception) {
-            Log.e(TAG, "خطا در بستن: ${e.message}", e)
+            Log.e(TAG, "❌ خطا در بستن: ${e.message}", e)
         }
     }
 }

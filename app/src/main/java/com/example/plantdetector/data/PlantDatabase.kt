@@ -758,7 +758,7 @@ object PlantDatabase {
                 interestingFacts = "نام monantha به معنای تک‌گل است و به آرایش کم‌شمار گل‌های این گونه اشاره دارد."
             )
 
-            "Trigonella_spruneriana" -> PlantInfo(
+            "Trigonella_Spruneriana" -> PlantInfo(
                 name = "شنبلیله اسپرونری",
                 scientificName = "Trigonella spruneriana",
                 family = "Fabaceae (باقلائیان)",
