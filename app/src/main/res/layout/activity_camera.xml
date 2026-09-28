@@ -5,30 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    android:layoutDirection="rtl"
     tools:context=".CameraActivity">
 
-    <!-- 📷 پیش‌نمایش دوربین -->
     <androidx.camera.view.PreviewView
         android:id="@+id/previewView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_height="match_parent" />
 
-    <!-- 🌱 Overlay برای رسم Bounding Box -->
     <com.example.plantdetector.view.PlantOverlayView
         android:id="@+id/overlayView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_height="match_parent" />
 
-    <!-- 📋 کارت اطلاعات تشخیص (بالای صفحه) -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardDetectionInfo"
         android:layout_width="match_parent"
@@ -48,7 +36,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- نام گیاه تشخیص داده شده -->
             <TextView
                 android:id="@+id/tvDetectedClass"
                 android:layout_width="match_parent"
@@ -57,9 +44,8 @@
                 android:textStyle="bold"
                 android:textColor="#1B5E20"
                 android:gravity="center"
-                tools:text="✅ Trifolium repens" />
+                tools:text="Trifolium repens" />
 
-            <!-- میزان اطمینان -->
             <TextView
                 android:id="@+id/tvDetectedConfidence"
                 android:layout_width="match_parent"
@@ -68,12 +54,10 @@
                 android:textColor="#2E7D32"
                 android:gravity="center"
                 android:layout_marginTop="4dp"
-                tools:text="اطمینان: 92.5٪" />
-
+                tools:text="92.5%" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- 🎯 راهنمای وسط کادر -->
     <TextView
         android:id="@+id/tvGuide"
         android:layout_width="wrap_content"
@@ -89,7 +73,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 🔄 ProgressBar -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -101,64 +84,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 🔘 دکمه‌های پایین -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <!-- ❌ دکمه لغو -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <Button
             android:id="@+id/btnCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:contentDescription="لغو"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            app:backgroundTint="#F44336"
-            app:tint="#FFFFFF" />
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginEnd="24dp"
+            android:backgroundTint="#F44336"
+            android:text="X"
+            android:textSize="24sp"
+            android:textColor="#FFFFFF" />
 
-        <!-- 📸 دکمه عکس‌برداری -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <Button
             android:id="@+id/btnCapture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="عکس‌برداری"
-            android:src="@android:drawable/ic_menu_camera"
-            android:enabled="false"
-            app:fabSize="large"
-            app:backgroundTint="#9E9E9E"
-            app:tint="#FFFFFF" />
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:backgroundTint="#4CAF50"
+            android:text="OK"
+            android:textSize="32sp"
+            android:textColor="#FFFFFF"
+            android:enabled="false" />
 
-        <!-- 🔙 دکمه بازگشت -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <Button
             android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:contentDescription="بازگشت"
-            android:src="@android:drawable/ic_menu_revert"
-            app:backgroundTint="#607D8B"
-            app:tint="#FFFFFF" />
-
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="24dp"
+            android:backgroundTint="#607D8B"
+            android:text="B"
+            android:textSize="24sp"
+            android:textColor="#FFFFFF" />
     </LinearLayout>
-
-    <!-- 🏛️ اطلاعات مرکز تحقیقات -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/center_name"
-        android:textSize="10sp"
-        android:textColor="#80FFFFFF"
-        android:gravity="center"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

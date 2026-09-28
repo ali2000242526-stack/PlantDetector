@@ -31,17 +31,55 @@ jobs:
           fi
           echo "✅ Model file found successfully!"
 
-      # ✅ استفاده از action جدید
+      # 🧹 پاک کردن cache قدیمی Gradle (حل مشکل sourceSetPathMap)
+      - name: Clean old Gradle caches
+        run: |
+          echo "🧹 Cleaning old Gradle caches..."
+          rm -rf ~/.gradle/caches/
+          rm -rf ~/.gradle/daemon/
+          rm -rf .gradle/
+          rm -rf app/build/
+          echo "✅ Old caches removed"
+
+      # ⚙️ نصب Gradle بدون cache (موقت برای build تمیز)
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: "8.7"
+          cache-disabled: true
 
-      - name: Build Debug APK
-        run: gradle assembleDebug --no-daemon
+      - name: Grant execute permission
+        run: chmod +x gradlew
+
+      # 🏗️ ساخت APK با build تمیز (no cache, rerun all tasks)
+      - name: Build Debug APK (clean build)
+        run: |
+          echo "🏗️ Starting clean build..."
+          ./gradlew clean
+          ./gradlew assembleDebug \
+            --no-daemon \
+            --no-build-cache \
+            --rerun-tasks \
+            --stacktrace \
+            --info
+        env:
+          GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
+        if: success()
         with:
           name: app-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 7
+
+      # 📤 آپلود لاگ در صورت خطا (برای دیباگ)
+      - name: Upload build logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: |
+            app/build/reports/
+            app/build/outputs/logs/
+          retention-days: 3
