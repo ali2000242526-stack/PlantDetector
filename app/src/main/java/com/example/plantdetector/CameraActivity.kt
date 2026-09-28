@@ -243,15 +243,6 @@ class CameraActivity : AppCompatActivity() {
                             ).show()
                         }
 
-                        serverUploader.uploadDetection(
-                            imageFile = photoFile,
-                            className = detection.className,
-                            confidence = detection.confidence,
-                            latitude = latitude,
-                            longitude = longitude,
-                            userName = userName,
-                            primaryKey = recordResult.primaryKey
-                        )
                     }
 
                     val intent = Intent(this@CameraActivity, ResultActivity::class.java).apply {
