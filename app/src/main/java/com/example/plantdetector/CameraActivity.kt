@@ -1,3 +1,5 @@
+
+
 package com.example.plantdetector
 
 import android.Manifest
@@ -108,7 +110,6 @@ class CameraActivity : AppCompatActivity() {
         binding.btnCapture.setOnClickListener { captureAndSave() }
         binding.btnCancel.setOnClickListener { finish() }
         
-        binding.btnInfo.setOnClickListener {
             Toast.makeText(
                 this,
                 "دوربین را به سمت حشره بگیرید.\nپس از تشخیص، دکمه ✓ را بزنید.",
@@ -118,17 +119,13 @@ class CameraActivity : AppCompatActivity() {
     }
     
     private fun getLocation() {
-        binding.tvLocation.isVisible = true
-        binding.tvLocation.text = "📍 در حال دریافت موقعیت..."
         
         locationHelper.getCurrentLocation { location: Location? ->
             currentLocation = location
             runOnUiThread {
                 if (location != null) {
-                    binding.tvLocation.text = locationHelper.formatLocation(location)
                     Log.d(TAG, "📍 موقعیت: ${location.latitude}, ${location.longitude}")
                 } else {
-                    binding.tvLocation.text = "📍 موقعیت مکانی: نامشخص"
                 }
             }
         }
@@ -612,3 +609,4 @@ class CameraActivity : AppCompatActivity() {
         detector?.close()
     }
 }
+
