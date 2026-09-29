@@ -22,7 +22,7 @@ class YOLODetector(private val context: Context) {
     
     companion object {
         private const val TAG = "YOLODetector"
-        private const val CONFIDENCE_THRESHOLD = 0.10f
+        private const val CONFIDENCE_THRESHOLD = 0.30f
     }
     
     init {
@@ -74,6 +74,9 @@ class YOLODetector(private val context: Context) {
             
             val rawOutput = outputBuffer[0]
             
+            // ═══════════════════════════════════════════
+            // بررسی نوع خروجی
+            // ═══════════════════════════════════════════
             val sum = rawOutput.sum()
             val maxVal = rawOutput.max() ?: 0f
             val minVal = rawOutput.min() ?: 0f
@@ -84,19 +87,19 @@ class YOLODetector(private val context: Context) {
             Log.d(TAG, "   بیشترین: ${String.format("%.4f", maxVal)}")
             Log.d(TAG, "   کمترین: ${String.format("%.4f", minVal)}")
             
-            val isAlreadyProbabilities = (sum > 0.9f && sum < 1.1f && minVal >= 0f)
-            Log.d(TAG, "   آیا احتمال است؟ ${if (isAlreadyProbabilities) "بله ✅" else "خیر (logits) ❌"}")
-            Log.d(TAG, "═══════════════════════════════════")
+            // اگر جمع ≈ 1.0 است، یعنی قبلاً softmax شده
+            val isAlreadyProbability = (sum > 0.9f && sum < 1.1f && minVal >= 0f)
+            Log.d(TAG, "   نوع خروجی: ${if (isAlreadyProbability) "احتمال ✅" else "logits ❌"}")
             
-            val probabilities: FloatArray
-            if (isAlreadyProbabilities) {
-                probabilities = rawOutput
-                Log.d(TAG, "✅ بدون softmax (خروجی از قبل احتمال است)")
+            val probabilities: FloatArray = if (isAlreadyProbability) {
+                Log.d(TAG, "   ✅ بدون softmax (خروجی از قبل احتمال است)")
+                rawOutput
             } else {
-                probabilities = softmax(rawOutput)
-                Log.d(TAG, "🔄 softmax اعمال شد")
+                Log.d(TAG, "   🔄 اعمال softmax...")
+                softmax(rawOutput)
             }
             
+            // پیدا کردن بهترین نتیجه
             var maxIdx = 0
             var maxProb = 0f
             for (i in probabilities.indices) {
@@ -106,9 +109,12 @@ class YOLODetector(private val context: Context) {
                 }
             }
             
-            Log.d(TAG, "🎯 تشخیص: ${classNames[maxIdx]}")
-            Log.d(TAG, "📊 اطمینان: ${String.format("%.2f", maxProb * 100)}٪")
+            Log.d(TAG, "🎯 تشخیص:")
+            Log.d(TAG, "   Index: $maxIdx")
+            Log.d(TAG, "   نام: ${classNames[maxIdx]}")
+            Log.d(TAG, "   اطمینان: ${String.format("%.2f", maxProb * 100)}٪")
             
+            // ۵ نتیجه برتر
             val top5 = probabilities.indices
                 .sortedByDescending { probabilities[it] }
                 .take(5)
@@ -116,7 +122,9 @@ class YOLODetector(private val context: Context) {
             for ((rank, idx) in top5.withIndex()) {
                 Log.d(TAG, "   ${rank+1}. ${classNames[idx]}: ${String.format("%.2f", probabilities[idx]*100)}٪")
             }
+            Log.d(TAG, "═══════════════════════════════════")
             
+            // آستانه
             if (maxProb >= CONFIDENCE_THRESHOLD && maxIdx < classNames.size) {
                 val fullBox = RectF(0f, 0f, bitmap.width.toFloat(), bitmap.height.toFloat())
                 val result = DetectionResult(
