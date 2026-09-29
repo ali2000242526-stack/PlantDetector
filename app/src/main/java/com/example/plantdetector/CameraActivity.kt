@@ -159,7 +159,7 @@ class CameraActivity : AppCompatActivity() {
 
                     runOnUiThread {
                         binding.cardDetectionInfo.visibility = android.view.View.VISIBLE
-                        binding.tvDetectedClass.text = "✅ ${topResult.className}"
+                        binding.tvDetectedClass.text = "✅ ${topResult.className} \n🔢 Index: ${topResult.classId}"
                         binding.tvDetectedConfidence.text =
                             "اطمینان: ${String.format("%.1f", topResult.confidence * 100)}٪"
                         binding.overlayView.setImageDimensions(bitmap.width, bitmap.height)
